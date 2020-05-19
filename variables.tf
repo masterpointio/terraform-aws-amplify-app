@@ -101,5 +101,5 @@ variable "custom_rules" {
     status    = any # Use null if not passing
     condition = any # Use null if not passing
   }))
-  description = "The custom rules to apply the root."
+  description = "The custom rules to apply to the Amplify App."
 }
