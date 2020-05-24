@@ -89,9 +89,8 @@ module "develop_branch_label" {
   tags        = var.tags
 }
 
-# TODO: Update to support user's passing their own build_spec.yml
 data "local_file" "build_spec" {
-    filename = "${path.module}/build_spec.yml"
+  filename = "${path.module}/build_spec.yml"
 }
 
 resource "aws_amplify_app" "this" {
@@ -100,7 +99,7 @@ resource "aws_amplify_app" "this" {
   repository               = "https://github.com/${var.organization}/${var.repo}"
   access_token             = var.gh_access_token
   enable_branch_auto_build = true
-  build_spec               = data.local_file.build_spec.content
+  build_spec               = var.build_spec_content != "" ? var.build_spec_content : data.local_file.build_spec.content
   tags                     = module.root_label.tags
 
   dynamic "custom_rules" {

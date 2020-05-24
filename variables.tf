@@ -50,13 +50,19 @@ variable "repo" {
 }
 
 variable "gh_access_token" {
-  type = string
+  type        = string
   description = "Personal Access token for 3rd party source control system for an Amplify App, used to create webhook and read-only deploy key. Token is not stored."
 }
 
 variable "description" {
   type        = string
   description = "The description to associate with the Amplify App."
+}
+
+variable "build_spec_content" {
+  default     = ""
+  type        = string
+  description = "Your build spec file contents. If not provided, then uses the default `build_spec.yml`."
 }
 
 variable "enable_basic_auth_on_master" {
@@ -82,14 +88,14 @@ variable "basic_auth_password" {
 }
 
 variable "develop_pull_request_preview" {
-  default = true
-  type = bool
+  default     = true
+  type        = bool
   description = "Whether to enable preview on PR's into develop."
 }
 
 variable "domain_name" {
-  default = ""
-  type = string
+  default     = ""
+  type        = string
   description = "The Custom Domain Name to associate with this Amplify App."
 }
 
@@ -98,8 +104,8 @@ variable "custom_rules" {
   type = list(object({
     source    = string # Required
     target    = string # Required
-    status    = any # Use null if not passing
-    condition = any # Use null if not passing
+    status    = any    # Use null if not passing
+    condition = any    # Use null if not passing
   }))
   description = "The custom rules to apply to the Amplify App."
 }
