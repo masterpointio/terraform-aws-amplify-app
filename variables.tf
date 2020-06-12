@@ -48,6 +48,17 @@ variable "repo" {
   type        = string
   description = "The name of the repo that the Amplify App will be created around."
 }
+variable "master_branch_name" {
+  default     = "master"
+  type        = string
+  description = "The name of the 'master'-like branch that you'd like to use."
+}
+
+variable "develop_branch_name" {
+  default     = "develop"
+  type        = string
+  description = "The name of the 'develop'-like branch that you'd like to use."
+}
 
 variable "gh_access_token" {
   type        = string

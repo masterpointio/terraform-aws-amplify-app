@@ -117,7 +117,7 @@ resource "aws_amplify_app" "this" {
 
 resource "aws_amplify_branch" "master" {
   app_id       = aws_amplify_app.this.id
-  branch_name  = "master"
+  branch_name  = var.master_branch_name
   display_name = module.master_branch_label.id
   tags         = module.master_branch_label.tags
 
@@ -130,7 +130,7 @@ resource "aws_amplify_branch" "master" {
 
 resource "aws_amplify_branch" "develop" {
   app_id                      = aws_amplify_app.this.id
-  branch_name                 = "develop"
+  branch_name                 = var.develop_branch_name
   display_name                = module.develop_branch_label.id
   enable_pull_request_preview = var.develop_pull_request_preview
   tags                        = module.develop_branch_label.tags
