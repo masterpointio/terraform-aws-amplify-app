@@ -5,7 +5,7 @@
  *
  * A Terraform module for building simple Amplify apps. This creates the `master` and `develop` branches, sets up the domain association, and creates webhooks for both branches.
  *
- * NOTE: This is currently using [@k24d's Amplify resources](https://github.com/terraform-providers/terraform-provider-aws/issues/6917#issuecomment-626309424) which are still up on PR and not currently merged into [terraform-provider-aws](https://github.com/terraform-providers/terraform-provider-aws). To use this today, you can use [these instructions](https://github.com/k24d/terraform-provider-aws/blob/amplify/README-amplify.md). While this notice is still up, please be sure to go and upvote [the main Amplify resource PR #11928](https://github.com/terraform-providers/terraform-provider-aws/pull/11928) so we can get that merged by the AWS provider team.
+ * NOTE: This is currently using [@k24d's Amplify resources](https://github.com/terraform-providers/terraform-provider-aws/issues/6917#issuecomment-626309424) which are still up on PR and not currently merged into [terraform-provider-aws](https://github.com/terraform-providers/terraform-provider-aws). To use this today, you can use [these instructions](https://github.com/k24d/terraform-provider-aws/blob/amplify/README-amplify.md) or run `make deps` which will install the amplify updated AWS provider. While this notice is still up, please be sure to go and upvote [the main Amplify resource PR #11928](https://github.com/terraform-providers/terraform-provider-aws/pull/11928) so we can get that merged by the AWS provider team.
  *
  * ## Usage
  *
