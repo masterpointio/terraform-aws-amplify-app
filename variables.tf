@@ -73,7 +73,7 @@ variable "description" {
 variable "build_spec_content" {
   default     = ""
   type        = string
-  description = "Your build spec file contents. If not provided, then uses the default `build_spec.yml`."
+  description = "Your build spec file contents. If not provided then it will use the `amplify.yml` at the root of your project / branch."
 }
 
 variable "enable_basic_auth_on_master" {

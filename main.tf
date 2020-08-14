@@ -89,17 +89,13 @@ module "develop_branch_label" {
   tags        = var.tags
 }
 
-data "local_file" "build_spec" {
-  filename = "${path.module}/build_spec.yml"
-}
-
 resource "aws_amplify_app" "this" {
   name                     = module.root_label.id
   description              = var.description != null ? var.description : "Amplify App for the github.com/${var.organization}/${var.repo} project."
   repository               = "https://github.com/${var.organization}/${var.repo}"
   access_token             = var.gh_access_token
   enable_branch_auto_build = true
-  build_spec               = var.build_spec_content != "" ? var.build_spec_content : data.local_file.build_spec.content
+  build_spec               = var.build_spec_content != "" ? var.build_spec_content : null
   tags                     = module.root_label.tags
 
   dynamic "custom_rules" {
