@@ -98,6 +98,12 @@ resource "aws_amplify_app" "this" {
   build_spec               = var.build_spec_content != "" ? var.build_spec_content : null
   tags                     = module.root_label.tags
 
+  basic_auth_config {
+    enable_basic_auth = var.enable_basic_auth_globally
+    username          = var.basic_auth_username
+    password          = var.basic_auth_password
+  }
+
   dynamic "custom_rules" {
     for_each = var.custom_rules
     iterator = rule

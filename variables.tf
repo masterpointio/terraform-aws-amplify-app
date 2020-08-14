@@ -76,6 +76,12 @@ variable "build_spec_content" {
   description = "Your build spec file contents. If not provided then it will use the `amplify.yml` at the root of your project / branch."
 }
 
+variable "enable_basic_auth_globally" {
+  default     = false
+  type        = bool
+  description = "To enable basic auth for all branches or not."
+}
+
 variable "enable_basic_auth_on_master" {
   default     = false
   type        = bool
