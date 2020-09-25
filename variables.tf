@@ -48,6 +48,25 @@ variable "repo" {
   type        = string
   description = "The name of the repo that the Amplify App will be created around."
 }
+
+variable "global_environment_variables" {
+  default     = {}
+  type        = map(string)
+  description = "Environment variables that are set across all branches."
+}
+
+variable "master_environment_variables" {
+  default     = {}
+  type        = map(string)
+  description = "Environment variables for the master branch."
+}
+
+variable "develop_environment_variables" {
+  default     = {}
+  type        = map(string)
+  description = "Environment variables for the develop branch."
+}
+
 variable "master_branch_name" {
   default     = "master"
   type        = string

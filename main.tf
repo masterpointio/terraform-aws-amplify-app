@@ -1,59 +1,3 @@
-/**
- * [![Masterpoint Logo](https://i.imgur.com/RDLnuQO.png)](https://masterpoint.io)
- *
- * # terraform-aws-amplify-app
- *
- * A Terraform module for building simple Amplify apps. This creates the `master` and `develop` branches, sets up the domain association, and creates webhooks for both branches.
- *
- * NOTE: This is currently using [@k24d's Amplify resources](https://github.com/terraform-providers/terraform-provider-aws/issues/6917#issuecomment-626309424) which are still up on PR and not currently merged into [terraform-provider-aws](https://github.com/terraform-providers/terraform-provider-aws). To use this today, you can use [these instructions](https://github.com/k24d/terraform-provider-aws/blob/amplify/README-amplify.md) or run `make deps` which will install the amplify updated AWS provider. While this notice is still up, please be sure to go and upvote [the main Amplify resource PR #11928](https://github.com/terraform-providers/terraform-provider-aws/pull/11928) so we can get that merged by the AWS provider team.
- *
- * ## Usage
- *
- *
- * ```hcl
- * provider "aws" {
- *   region = "us-east-1"
- * }
- *
- * module "amplify" {
- *   source = "git::https://github.com/masterpointio/terraform-aws-amplify-app.git?ref=tags/0.1.0"
- *
- *   namespace                    = var.namespace
- *   stage                        = var.stage
- *   name                         = "mattgowie"
- *   organization                 = "Gowiem"
- *   repo                         = "mattgowie.com"
- *   gh_access_token              = var.gh_access_token
- *   domain_name                  = "mattgowie.com"
- *   description                  = "The Personal site of Matt Gowie."
- *   enable_basic_auth_on_master  = false
- *   enable_basic_auth_on_develop = true
- *   basic_auth_username          = var.basic_auth_username
- *   basic_auth_password          = var.basic_auth_password
- *   develop_pull_request_preview = true
- *
- *   custom_rules = [{
- *     source    = "https://www.mattgowie.com"
- *     target    = "https://mattgowie.com"
- *     status    = "301"
- *     condition = null
- *   }, {
- *     source    = "/<*>"
- *     target    = "/index.html"
- *     status    = "404"
- *     condition = null
- *   }]
- * }
- * ```
- *
- *
- * ## Credits
- *
- * 1. [@k24d](https://github.com/k24d)'s creation of the Amplify Resources for the AWS Provider!
- * 1. [cloudposse/terraform-null-label](https://github.com/cloudposse/terraform-null-label)
- *
- */
-
 # main.tf
 
 module "root_label" {
@@ -96,6 +40,7 @@ resource "aws_amplify_app" "this" {
   access_token             = var.gh_access_token
   enable_branch_auto_build = true
   build_spec               = var.build_spec_content != "" ? var.build_spec_content : null
+  environment_variables    = var.global_environment_variables
   tags                     = module.root_label.tags
 
   basic_auth_config {
@@ -123,6 +68,8 @@ resource "aws_amplify_branch" "master" {
   display_name = module.master_branch_label.id
   tags         = module.master_branch_label.tags
 
+  environment_variables = var.master_environment_variables
+
   basic_auth_config {
     enable_basic_auth = var.enable_basic_auth_on_master
     username          = var.basic_auth_username
@@ -136,6 +83,8 @@ resource "aws_amplify_branch" "develop" {
   display_name                = module.develop_branch_label.id
   enable_pull_request_preview = var.develop_pull_request_preview
   tags                        = module.develop_branch_label.tags
+
+  environment_variables = var.develop_environment_variables
 
   basic_auth_config {
     enable_basic_auth = var.enable_basic_auth_on_develop

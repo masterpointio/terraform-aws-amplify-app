@@ -17,7 +17,7 @@ output "domain_association_arn" {
 
 output "custom_domains" {
   description = "List of custom domains that are associated with this resource (if any)."
-  value       = var.domain_name == "" ? [] : [
+  value = var.domain_name == "" ? [] : [
     var.domain_name,
     "www.${var.domain_name}",
     "master.${var.domain_name}",

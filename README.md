@@ -46,9 +46,10 @@ module "amplify" {
 
 ## Credits
 
-1. [@k24d](https://github.com/k24d)'s creation of the Amplify Resources for the AWS Provider!  
+1. [@k24d](https://github.com/k24d)'s creation of the Amplify Resources for the AWS Provider!
 1. [cloudposse/terraform-null-label](https://github.com/cloudposse/terraform-null-label)
 
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
 | Name | Version |
@@ -63,7 +64,6 @@ module "amplify" {
 | Name | Version |
 |------|---------|
 | aws | ~> 2.0 |
-| local | ~> 1.2 |
 
 ## Inputs
 
@@ -72,15 +72,22 @@ module "amplify" {
 | attributes | Additional attributes (e.g. `1`) | `list(string)` | `[]` | no |
 | basic\_auth\_password | The password to use for the basic auth configuration. | `string` | n/a | yes |
 | basic\_auth\_username | The username to use for the basic auth configuration. | `string` | n/a | yes |
-| custom\_rules | The custom rules to apply to the Amplify App. | <pre>list(object({<br>    source    = string # Required<br>    target    = string # Required<br>    status    = any # Use null if not passing<br>    condition = any # Use null if not passing<br>  }))</pre> | `[]` | no |
+| build\_spec\_content | Your build spec file contents. If not provided then it will use the `amplify.yml` at the root of your project / branch. | `string` | `""` | no |
+| custom\_rules | The custom rules to apply to the Amplify App. | <pre>list(object({<br>    source    = string # Required<br>    target    = string # Required<br>    status    = any    # Use null if not passing<br>    condition = any    # Use null if not passing<br>  }))</pre> | `[]` | no |
 | delimiter | Delimiter to be used between `namespace`, `stage`, `name` and `attributes` | `string` | `"-"` | no |
 | description | The description to associate with the Amplify App. | `string` | n/a | yes |
+| develop\_branch\_name | The name of the 'develop'-like branch that you'd like to use. | `string` | `"develop"` | no |
+| develop\_environment\_variables | Environment variables for the develop branch. | `map(string)` | `{}` | no |
 | develop\_pull\_request\_preview | Whether to enable preview on PR's into develop. | `bool` | `true` | no |
 | domain\_name | The Custom Domain Name to associate with this Amplify App. | `string` | `""` | no |
+| enable\_basic\_auth\_globally | To enable basic auth for all branches or not. | `bool` | `false` | no |
 | enable\_basic\_auth\_on\_develop | To enable basic auth on the develop branch subdomain or not. | `bool` | `true` | no |
 | enable\_basic\_auth\_on\_master | To enable basic auth the root subdomain or not. | `bool` | `false` | no |
 | environment | Environment, e.g. 'prod', 'staging', 'dev', 'pre-prod', 'UAT' | `string` | `""` | no |
 | gh\_access\_token | Personal Access token for 3rd party source control system for an Amplify App, used to create webhook and read-only deploy key. Token is not stored. | `string` | n/a | yes |
+| global\_environment\_variables | Environment variables that are set across all branches. | `map(string)` | `{}` | no |
+| master\_branch\_name | The name of the 'master'-like branch that you'd like to use. | `string` | `"master"` | no |
+| master\_environment\_variables | Environment variables for the master branch. | `map(string)` | `{}` | no |
 | name | Solution name, e.g. 'app' or 'jenkins' | `string` | n/a | yes |
 | namespace | Namespace, which could be your organization name or abbreviation, e.g. 'eg' or 'cp' | `string` | n/a | yes |
 | organization | The GitHub organization or user where the repo lives. | `string` | n/a | yes |
@@ -101,3 +108,4 @@ module "amplify" {
 | master\_webhook\_arn | The ARN of the master webhook. |
 | master\_webhook\_url | The URL of the master webhook. |
 
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
