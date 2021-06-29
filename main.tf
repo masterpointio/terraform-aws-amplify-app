@@ -1,55 +1,39 @@
-# main.tf
-
-module "root_label" {
-  source      = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.16.0"
-  namespace   = var.namespace
-  stage       = var.stage
-  name        = var.name
-  environment = var.environment
-  delimiter   = var.delimiter
-  attributes  = var.attributes
-  tags        = var.tags
+locals {
+  basic_auth_creds = try(base64encode("${var.basic_auth_username}:${var.basic_auth_password}"), null)
 }
 
 module "master_branch_label" {
-  source      = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.16.0"
-  namespace   = var.namespace
-  stage       = var.stage
-  name        = var.name
-  environment = var.environment
-  delimiter   = var.delimiter
-  attributes  = concat(var.attributes, ["master"])
-  tags        = var.tags
+  source  = "cloudposse/label/null"
+  version = "0.24.1"
+
+  attributes = concat(var.attributes, ["master"])
+
+  context = module.this.context
 }
 
 module "develop_branch_label" {
-  source      = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.16.0"
-  namespace   = var.namespace
-  stage       = var.stage
-  name        = var.name
-  environment = var.environment
-  delimiter   = var.delimiter
-  attributes  = concat(var.attributes, ["develop"])
-  tags        = var.tags
+  source  = "cloudposse/label/null"
+  version = "0.24.1"
+
+  attributes = concat(var.attributes, ["develop"])
+
+  context = module.this.context
 }
 
 resource "aws_amplify_app" "this" {
-  name                     = module.root_label.id
+  name                     = module.this.id
   description              = var.description != null ? var.description : "Amplify App for the github.com/${var.organization}/${var.repo} project."
   repository               = "https://github.com/${var.organization}/${var.repo}"
   access_token             = var.gh_access_token
   enable_branch_auto_build = true
   build_spec               = var.build_spec_content != "" ? var.build_spec_content : null
   environment_variables    = var.global_environment_variables
-  tags                     = module.root_label.tags
+  tags                     = module.this.tags
 
-  basic_auth_config {
-    enable_basic_auth = var.enable_basic_auth_globally
-    username          = var.basic_auth_username
-    password          = var.basic_auth_password
-  }
+  enable_basic_auth      = var.enable_basic_auth_globally
+  basic_auth_credentials = local.basic_auth_creds
 
-  dynamic "custom_rules" {
+  dynamic "custom_rule" {
     for_each = var.custom_rules
     iterator = rule
 
@@ -70,11 +54,8 @@ resource "aws_amplify_branch" "master" {
 
   environment_variables = var.master_environment_variables
 
-  basic_auth_config {
-    enable_basic_auth = var.enable_basic_auth_on_master
-    username          = var.basic_auth_username
-    password          = var.basic_auth_password
-  }
+  enable_basic_auth      = var.enable_basic_auth_on_master
+  basic_auth_credentials = local.basic_auth_creds
 }
 
 resource "aws_amplify_branch" "develop" {
@@ -86,11 +67,8 @@ resource "aws_amplify_branch" "develop" {
 
   environment_variables = var.develop_environment_variables
 
-  basic_auth_config {
-    enable_basic_auth = var.enable_basic_auth_on_develop
-    username          = var.basic_auth_username
-    password          = var.basic_auth_password
-  }
+  enable_basic_auth      = var.enable_basic_auth_on_develop
+  basic_auth_credentials = local.basic_auth_creds
 }
 
 resource "aws_amplify_domain_association" "this" {
@@ -99,22 +77,22 @@ resource "aws_amplify_domain_association" "this" {
   app_id      = aws_amplify_app.this.id
   domain_name = var.domain_name
 
-  sub_domain_settings {
+  sub_domain {
     branch_name = aws_amplify_branch.master.branch_name
     prefix      = ""
   }
 
-  sub_domain_settings {
+  sub_domain {
     branch_name = aws_amplify_branch.master.branch_name
     prefix      = "www"
   }
 
-  sub_domain_settings {
+  sub_domain {
     branch_name = aws_amplify_branch.master.branch_name
     prefix      = "master"
   }
 
-  sub_domain_settings {
+  sub_domain {
     branch_name = aws_amplify_branch.develop.branch_name
     prefix      = "dev"
   }

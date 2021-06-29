@@ -1,5 +1,3 @@
-# outputs.tf
-
 output "arn" {
   description = "The ARN of the main Amplify resource."
   value       = aws_amplify_app.this.arn
@@ -20,8 +18,9 @@ output "custom_domains" {
   value = var.domain_name == "" ? [] : [
     var.domain_name,
     "www.${var.domain_name}",
-    "master.${var.domain_name}",
+    "main.${var.domain_name}",
     "dev.${var.domain_name}",
+    "pub.${var.domain_name}",
   ]
 }
 
