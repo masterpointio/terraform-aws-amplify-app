@@ -71,6 +71,8 @@ module "amplify" {
 | Name | Type |
 |------|------|
 | [aws_amplify_app.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/amplify_app) | resource |
+| [aws_amplify_backend_environment.develop](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/amplify_backend_environment) | resource |
+| [aws_amplify_backend_environment.master](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/amplify_backend_environment) | resource |
 | [aws_amplify_branch.develop](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/amplify_branch) | resource |
 | [aws_amplify_branch.master](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/amplify_branch) | resource |
 | [aws_amplify_domain_association.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/amplify_domain_association) | resource |
@@ -90,6 +92,7 @@ module "amplify" {
 | <a name="input_custom_rules"></a> [custom\_rules](#input\_custom\_rules) | The custom rules to apply to the Amplify App. | <pre>list(object({<br>    source    = string # Required<br>    target    = string # Required<br>    status    = any    # Use null if not passing<br>    condition = any    # Use null if not passing<br>  }))</pre> | `[]` | no |
 | <a name="input_delimiter"></a> [delimiter](#input\_delimiter) | Delimiter to be used between `namespace`, `environment`, `stage`, `name` and `attributes`.<br>Defaults to `-` (hyphen). Set to `""` to use no delimiter at all. | `string` | `null` | no |
 | <a name="input_description"></a> [description](#input\_description) | The description to associate with the Amplify App. | `string` | n/a | yes |
+| <a name="input_develop_backend_environment_enabled"></a> [develop\_backend\_environment\_enabled](#input\_develop\_backend\_environment\_enabled) | Whether to create the backend environment for develop or not. | `bool` | `false` | no |
 | <a name="input_develop_branch_name"></a> [develop\_branch\_name](#input\_develop\_branch\_name) | The name of the 'develop'-like branch that you'd like to use. | `string` | `"develop"` | no |
 | <a name="input_develop_environment_variables"></a> [develop\_environment\_variables](#input\_develop\_environment\_variables) | Environment variables for the develop branch. | `map(string)` | `{}` | no |
 | <a name="input_develop_pull_request_preview"></a> [develop\_pull\_request\_preview](#input\_develop\_pull\_request\_preview) | Whether to enable preview on PR's into develop. | `bool` | `true` | no |
@@ -103,6 +106,7 @@ module "amplify" {
 | <a name="input_global_environment_variables"></a> [global\_environment\_variables](#input\_global\_environment\_variables) | Environment variables that are set across all branches. | `map(string)` | `{}` | no |
 | <a name="input_id_length_limit"></a> [id\_length\_limit](#input\_id\_length\_limit) | Limit `id` to this many characters.<br>Set to `0` for unlimited length.<br>Set to `null` for default, which is `0`.<br>Does not affect `id_full`. | `number` | `null` | no |
 | <a name="input_label_order"></a> [label\_order](#input\_label\_order) | The naming order of the id output and Name tag.<br>Defaults to ["namespace", "environment", "stage", "name", "attributes"].<br>You can omit any of the 5 elements, but at least one must be present. | `list(string)` | `null` | no |
+| <a name="input_master_backend_environment_enabled"></a> [master\_backend\_environment\_enabled](#input\_master\_backend\_environment\_enabled) | Whether to create the backend environment for master or not. | `bool` | `false` | no |
 | <a name="input_master_branch_name"></a> [master\_branch\_name](#input\_master\_branch\_name) | The name of the 'master'-like branch that you'd like to use. | `string` | `"master"` | no |
 | <a name="input_master_environment_variables"></a> [master\_environment\_variables](#input\_master\_environment\_variables) | Environment variables for the master branch. | `map(string)` | `{}` | no |
 | <a name="input_name"></a> [name](#input\_name) | Solution name, e.g. 'app' or 'jenkins' | `string` | `null` | no |

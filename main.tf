@@ -71,6 +71,18 @@ resource "aws_amplify_branch" "develop" {
   basic_auth_credentials = local.basic_auth_creds
 }
 
+resource "aws_amplify_backend_environment" "master" {
+  count            = var.master_backend_environment_enabled ? 1 : 0
+  app_id           = aws_amplify_app.this.id
+  environment_name = var.master_branch_name
+}
+
+resource "aws_amplify_backend_environment" "develop" {
+  count            = var.develop_backend_environment_enabled ? 1 : 0
+  app_id           = aws_amplify_app.this.id
+  environment_name = var.develop_branch_name
+}
+
 resource "aws_amplify_domain_association" "this" {
   count = var.domain_name != "" ? 1 : 0
 

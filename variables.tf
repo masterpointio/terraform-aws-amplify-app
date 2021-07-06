@@ -26,6 +26,18 @@ variable "develop_environment_variables" {
   description = "Environment variables for the develop branch."
 }
 
+variable "master_backend_environment_enabled" {
+  default     = false
+  type        = bool
+  description = "Whether to create the backend environment for master or not."
+}
+
+variable "develop_backend_environment_enabled" {
+  default     = false
+  type        = bool
+  description = "Whether to create the backend environment for develop or not."
+}
+
 variable "master_branch_name" {
   default     = "master"
   type        = string
