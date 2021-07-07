@@ -20,6 +20,29 @@ module "develop_branch_label" {
   context = module.this.context
 }
 
+data "aws_iam_policy_document" "assume_role" {
+  count = module.this.enabled && var.amplify_service_role_enabled ? 1 : 0
+
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["amplify.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "default" {
+  count = module.this.enabled && var.amplify_service_role_enabled ? 1 : 0
+
+  name                = module.this.id
+  assume_role_policy  = join("", data.aws_iam_policy_document.assume_role.*.json)
+  managed_policy_arns = ["arn:aws:iam::aws:policy/AdministratorAccess"]
+  tags                = module.this.tags
+}
+
 resource "aws_amplify_app" "this" {
   name                     = module.this.id
   description              = var.description != null ? var.description : "Amplify App for the github.com/${var.organization}/${var.repo} project."
@@ -28,6 +51,7 @@ resource "aws_amplify_app" "this" {
   enable_branch_auto_build = true
   build_spec               = var.build_spec_content != "" ? var.build_spec_content : null
   environment_variables    = var.global_environment_variables
+  iam_service_role_arn     = var.amplify_service_role_enabled ? aws_iam_role.default[0].arn : null
   tags                     = module.this.tags
 
   enable_basic_auth      = var.enable_basic_auth_globally

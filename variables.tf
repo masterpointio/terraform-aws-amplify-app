@@ -8,6 +8,12 @@ variable "repo" {
   description = "The name of the repo that the Amplify App will be created around."
 }
 
+variable "amplify_service_role_enabled" {
+  default     = false
+  type        = bool
+  description = "Whether to enable the IAM Service Role for Amplify or not. See https://docs.aws.amazon.com/amplify/latest/userguide/how-to-service-role-amplify-console.html for full details."
+}
+
 variable "global_environment_variables" {
   default     = {}
   type        = map(string)
