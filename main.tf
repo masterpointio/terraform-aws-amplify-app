@@ -68,18 +68,27 @@ resource "aws_amplify_app" "this" {
       condition = lookup(rule.value, "condition", null)
     }
   }
+
+  lifecycle {
+    ignore_changes = [platform, custom_rule]
+  }
 }
 
 resource "aws_amplify_branch" "master" {
-  app_id       = aws_amplify_app.this.id
-  branch_name  = var.master_branch_name
-  display_name = module.master_branch_label.id
-  tags         = module.master_branch_label.tags
+  app_id                  = aws_amplify_app.this.id
+  branch_name             = var.master_branch_name
+  display_name            = module.master_branch_label.id
+  tags                    = module.master_branch_label.tags
+  backend_environment_arn = var.master_backend_environment_enabled ? aws_amplify_backend_environment.master[0].arn : null
 
   environment_variables = var.master_environment_variables
 
   enable_basic_auth      = var.enable_basic_auth_on_master
   basic_auth_credentials = local.basic_auth_creds
+
+  lifecycle {
+    ignore_changes = [framework]
+  }
 }
 
 resource "aws_amplify_branch" "develop" {
@@ -88,11 +97,16 @@ resource "aws_amplify_branch" "develop" {
   display_name                = module.develop_branch_label.id
   enable_pull_request_preview = var.develop_pull_request_preview
   tags                        = module.develop_branch_label.tags
+  backend_environment_arn     = var.develop_backend_environment_enabled ? aws_amplify_backend_environment.develop[0].arn : null
 
   environment_variables = var.develop_environment_variables
 
   enable_basic_auth      = var.enable_basic_auth_on_develop
   basic_auth_credentials = local.basic_auth_creds
+
+  lifecycle {
+    ignore_changes = [framework]
+  }
 }
 
 resource "aws_amplify_backend_environment" "master" {
