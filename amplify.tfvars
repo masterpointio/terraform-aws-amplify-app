@@ -1,0 +1,6 @@
+basic_auth_password = "Amma@02061962"
+basic_auth_username = "Kanchikumar"
+description = "For Cogniwide demo"
+gh_access_token = "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"
+organization = "Kanchikumar-glenise"
+repo = "webapp-cogniwide"
