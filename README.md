@@ -1,6 +1,10 @@
 [![Masterpoint Logo](https://i.imgur.com/RDLnuQO.png)](https://masterpoint.io)
 
-# terraform-aws-amplify-app
+# NOTE! This module is no longer maintained.
+
+This module is old and the good folks at [Cloud Posse](https://cloudposse.com/) have built a better module, so we're sunsetting this module in favor of using that one. Check it out and reach out if you have any issues - Thanks!
+
+# terraform-aws-amplify-app (Archived)
 
 A Terraform module for building simple Amplify apps. This creates the `master` and `develop` branches, sets up the domain association, and creates webhooks for both branches.
 
